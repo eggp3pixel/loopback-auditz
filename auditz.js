@@ -429,9 +429,9 @@ exports.default = function (Model) {
         var callback = cb === undefined && typeof opt === 'function' ? opt : cb;
 
         return this.updateAttributes((0, _extends4.default)({}, scrubbed), { delete: true }).then(function (result) {
-          return typeof cb === 'function' ? callback(null, result) : result;
+          return typeof callback === 'function' ? callback(null, result) : result;
         }).catch(function (error) {
-          return typeof cb === 'function' ? callback(error) : _promise2.default.reject(error);
+          return typeof callback === 'function' ? callback(error) : _promise2.default.reject(error);
         });
       };
 

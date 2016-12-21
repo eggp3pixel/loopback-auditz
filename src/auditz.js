@@ -378,8 +378,8 @@ export default (Model, bootOptions = {}) => {
       const callback = (cb === undefined && typeof opt === 'function') ? opt : cb;
 
       return this.updateAttributes({ ...scrubbed }, {delete: true})
-        .then(result => (typeof cb === 'function') ? callback(null, result) : result)
-        .catch(error => (typeof cb === 'function') ? callback(error) : Promise.reject(error));
+        .then(result => (typeof callback === 'function') ? callback(null, result) : result)
+        .catch(error => (typeof callback === 'function') ? callback(error) : Promise.reject(error));
     };
 
     Model.prototype.remove = Model.prototype.destroy;
