@@ -403,7 +403,7 @@ exports.default = function (Model) {
 
             var context = {
               Model: Model,
-              where: [(0, _extends4.default)({}, scrubbed)].concat(newOpt),
+              where: (0, _defineProperty3.default)({}, idName, id),
               instance: deletedInstance,
               hookState: {},
               options: opt
@@ -465,8 +465,11 @@ exports.default = function (Model) {
       var _find = Model.find;
       Model.find = function findDeleted() {
         var query = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+        var filter = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
-        if (!query.deleted) {
+        var deleted = query.deleted !== undefined ? query.deleted : filter.deleted !== undefined ? filter.deleted : undefined;
+
+        if (!deleted) {
           if (!query.where || (0, _keys2.default)(query.where).length === 0) {
             query.where = queryNonDeleted;
           } else {
@@ -474,8 +477,8 @@ exports.default = function (Model) {
           }
         }
 
-        for (var _len3 = arguments.length, rest = Array(_len3 > 1 ? _len3 - 1 : 0), _key3 = 1; _key3 < _len3; _key3++) {
-          rest[_key3 - 1] = arguments[_key3];
+        for (var _len3 = arguments.length, rest = Array(_len3 > 2 ? _len3 - 2 : 0), _key3 = 2; _key3 < _len3; _key3++) {
+          rest[_key3 - 2] = arguments[_key3];
         }
 
         return _find.call.apply(_find, [Model, query].concat(rest));
