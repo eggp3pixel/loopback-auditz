@@ -467,6 +467,8 @@ exports.default = function (Model) {
           whereNotDeleted = queryNonDeleted;
         } else if (where != queryNonDeleted) {
           whereNotDeleted = { and: [where, queryNonDeleted] };
+        } else {
+          whereNotDeleted = queryNonDeleted;
         }
 
         for (var _len4 = arguments.length, rest = Array(_len4 > 1 ? _len4 - 1 : 0), _key4 = 1; _key4 < _len4; _key4++) {
