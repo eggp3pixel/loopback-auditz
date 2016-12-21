@@ -403,7 +403,7 @@ export default (Model, bootOptions = {}) => {
 
     const _find = Model.find;
     Model.find = function findDeleted(query = {}, ...rest) {
-      var filter = typeof(rest[0]) !== "function"?rest[0]:{};
+      var filter = typeof(rest[0]) == "object"?rest[0]:{};
 	  var deleted = query.deleted !== undefined?query.deleted: filter.deleted !== undefined ?filter.deleted:undefined;
       
       if (!deleted) {

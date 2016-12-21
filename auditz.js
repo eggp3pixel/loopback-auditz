@@ -468,7 +468,7 @@ exports.default = function (Model) {
           rest[_key3 - 1] = arguments[_key3];
         }
 
-        var filter = typeof rest[0] !== "function" ? rest[0] : {};
+        var filter = (0, _typeof3.default)(rest[0]) == "object" ? rest[0] : {};
         var deleted = query.deleted !== undefined ? query.deleted : filter.deleted !== undefined ? filter.deleted : undefined;
 
         if (!deleted) {
