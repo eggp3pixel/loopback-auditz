@@ -410,7 +410,7 @@ exports.default = function (Model) {
             Model.notifyObserversOf('after delete', context, function (err, _ctx) {
               if (err) return callback(err);
 
-              var _result = ctx.options.remoteCtx.result;
+              var _result = _ctx.options.remoteCtx.result;
               if (_result != null && (typeof _result === 'undefined' ? 'undefined' : (0, _typeof3.default)(_result)) == "object") {
                 result = (0, _extends4.default)(result, _result);
               }
