@@ -393,8 +393,32 @@ exports.default = function (Model) {
           newOpt.remoteCtx = opt.remoteCtx;
         }
 
-        return Model.updateAll((0, _defineProperty3.default)({}, idName, id), (0, _extends4.default)({}, scrubbed), newOpt).then(function (result) {
-          return typeof callback === 'function' ? callback(null, result) : result;
+        return Model.updateAll((0, _defineProperty3.default)({}, idName, id), (0, _extends4.default)({}, scrubbed), newOpt)
+        //.then(result => (typeof callback === 'function') ? callback(null, result) : result)
+        .then(function (result) {
+          Model.findById(Model, { deleted: true }, function (err, deletedInstance) {
+            if (err) {
+              return callback(err);
+            }
+
+            var context = {
+              Model: Model,
+              where: [(0, _extends4.default)({}, scrubbed)].concat(newOpt),
+              instance: deletedInstance,
+              hookState: {},
+              options: opt
+            };
+
+            Model.notifyObserversOf('after delete', context, function (err, ctx) {
+              if (err) return callback(err);
+
+              if (typeof callback === 'function') {
+                return callback(null, result);
+              } else {
+                return result;
+              }
+            });
+          });
         }).catch(function (error) {
           return typeof callback === 'function' ? callback(error) : _promise2.default.reject(error);
         });

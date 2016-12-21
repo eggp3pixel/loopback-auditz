@@ -338,10 +338,38 @@ export default (Model, bootOptions = {}) => {
       if (typeof opt === 'object') {
         newOpt.remoteCtx = opt.remoteCtx;
       }
-
+      
       return Model.updateAll({ [idName]: id }, { ...scrubbed}, newOpt)
-        .then(result => (typeof callback === 'function') ? callback(null, result) : result)
-        .catch(error => (typeof callback === 'function') ? callback(error) : Promise.reject(error));
+        //.then(result => (typeof callback === 'function') ? callback(null, result) : result)
+	  .then((result) =>
+      {
+        Model.findById(Model, { deleted: true }, function (err, deletedInstance) {
+          if (err) {return callback(err);}
+	
+			var context = {
+				Model: Model,
+				where: [{ ...scrubbed}].concat(newOpt),
+				instance: deletedInstance,
+				hookState: {},
+				options: opt,
+			};
+	
+			Model.notifyObserversOf('after delete', context,
+				function(err, ctx) {
+					if (err) return callback(err);
+					
+					if(typeof callback === 'function')
+					{
+						return callback(null, result);
+					}
+					else
+					{
+						return result;
+					}
+				});
+        });
+      })
+      .catch(error => (typeof callback === 'function') ? callback(error) : Promise.reject(error));
     };
 
     Model.removeById = Model.destroyById;
