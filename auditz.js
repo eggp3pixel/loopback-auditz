@@ -393,9 +393,7 @@ exports.default = function (Model) {
           newOpt.remoteCtx = opt.remoteCtx;
         }
 
-        return Model.updateAll((0, _defineProperty3.default)({}, idName, id), (0, _extends4.default)({}, scrubbed), newOpt)
-        //.then(result => (typeof callback === 'function') ? callback(null, result) : result)
-        .then(function (result) {
+        Model.updateAll((0, _defineProperty3.default)({}, idName, id), (0, _extends4.default)({}, scrubbed), newOpt).then(function (result) {
           Model.findById(id, { deleted: true }, function (err, deletedInstance) {
             if (err) {
               return callback(err);

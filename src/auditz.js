@@ -339,8 +339,7 @@ export default (Model, bootOptions = {}) => {
         newOpt.remoteCtx = opt.remoteCtx;
       }
       
-      return Model.updateAll({ [idName]: id }, { ...scrubbed}, newOpt)
-        //.then(result => (typeof callback === 'function') ? callback(null, result) : result)
+      Model.updateAll({ [idName]: id }, { ...scrubbed}, newOpt)
 	  .then((result) =>
       {
         Model.findById(id, { deleted: true }, function (err, deletedInstance) {
