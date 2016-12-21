@@ -343,12 +343,12 @@ export default (Model, bootOptions = {}) => {
         //.then(result => (typeof callback === 'function') ? callback(null, result) : result)
 	  .then((result) =>
       {
-        Model.findById(Model, { deleted: true }, function (err, deletedInstance) {
+        Model.findById(id, { deleted: true }, function (err, deletedInstance) {
           if (err) {return callback(err);}
 	
 			var context = {
 				Model: Model,
-				where: [{ ...scrubbed}].concat(newOpt),
+				where: { [idName]: id },
 				instance: deletedInstance,
 				hookState: {},
 				options: opt,
