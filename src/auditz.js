@@ -393,7 +393,7 @@ export default (Model, bootOptions = {}) => {
       let whereNotDeleted;
       if (!where || Object.keys(where).length === 0) {
         whereNotDeleted = queryNonDeleted;
-      } else {
+      } else if(where != queryNonDeleted){
         whereNotDeleted = { and: [ where, queryNonDeleted ] };
       }
       return _count.call(Model, whereNotDeleted, ...rest);

@@ -465,7 +465,7 @@ exports.default = function (Model) {
         var whereNotDeleted = void 0;
         if (!where || (0, _keys2.default)(where).length === 0) {
           whereNotDeleted = queryNonDeleted;
-        } else {
+        } else if (where != queryNonDeleted) {
           whereNotDeleted = { and: [where, queryNonDeleted] };
         }
 
