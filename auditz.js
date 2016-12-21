@@ -463,8 +463,12 @@ exports.default = function (Model) {
       var _find = Model.find;
       Model.find = function findDeleted() {
         var query = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-        var filter = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
+        for (var _len3 = arguments.length, rest = Array(_len3 > 1 ? _len3 - 1 : 0), _key3 = 1; _key3 < _len3; _key3++) {
+          rest[_key3 - 1] = arguments[_key3];
+        }
+
+        var filter = typeof rest[0] !== "function" ? rest[0] : {};
         var deleted = query.deleted !== undefined ? query.deleted : filter.deleted !== undefined ? filter.deleted : undefined;
 
         if (!deleted) {
@@ -473,10 +477,6 @@ exports.default = function (Model) {
           } else {
             query.where = { and: [query.where, queryNonDeleted] };
           }
-        }
-
-        for (var _len3 = arguments.length, rest = Array(_len3 > 2 ? _len3 - 2 : 0), _key3 = 2; _key3 < _len3; _key3++) {
-          rest[_key3 - 2] = arguments[_key3];
         }
 
         return _find.call.apply(_find, [Model, query].concat(rest));
