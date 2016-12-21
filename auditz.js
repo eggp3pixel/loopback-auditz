@@ -412,7 +412,7 @@ exports.default = function (Model) {
 
         return this.updateAttributes((0, _extends4.default)({}, scrubbed), { delete: true }).then(function (result) {
           return _modelNotifyAfterDelete(_this.id, opt, { instance: result }, function (err, result) {
-            return typeof callback === 'function' ? callback(error) : result;
+            return typeof callback === 'function' ? callback(err) : result;
           });
         }).catch(function (error) {
           return typeof callback === 'function' ? callback(error) : _promise2.default.reject(error);
