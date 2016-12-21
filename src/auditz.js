@@ -340,40 +340,7 @@ export default (Model, bootOptions = {}) => {
       }
       
       Model.updateAll({ [idName]: id }, { ...scrubbed}, newOpt)
-	  .then((result) =>
-      {
-        Model.findById(id, { deleted: true }, function (err, deletedInstance) {
-          if (err) {return callback(err);}
-	
-			var context = {
-				Model: Model,
-				where: { [idName]: id },
-				instance: deletedInstance,
-				hookState: {},
-				options: opt,
-			};
-	
-			Model.notifyObserversOf('after delete', context,
-				function(err, _ctx) {
-					if (err) return callback(err);
-					
-					var _result =  ctx.options.remoteCtx.result;
-					if(_result != null && typeof(_result) == "object")
-                    {
-                      result = Object.assign(result,_result);
-                    }
-					
-					if(typeof callback === 'function')
-					{
-						return callback(null, result);
-					}
-					else
-					{
-						return result;
-					}
-				});
-        });
-      })
+	  .then(result=> _modelNotifyAfterDelete(id, opt, result,(err,result)=>(typeof callback === 'function') ? callback(error):result))
       .catch(error => (typeof callback === 'function') ? callback(error) : Promise.reject(error));
     };
 
@@ -384,7 +351,7 @@ export default (Model, bootOptions = {}) => {
       const callback = (cb === undefined && typeof opt === 'function') ? opt : cb;
 
       return this.updateAttributes({ ...scrubbed }, {delete: true})
-        .then(result => (typeof callback === 'function') ? callback(null, result) : result)
+        .then(result => _modelNotifyAfterDelete(this.id, opt, result,(err,result)=>(typeof callback === 'function') ? callback(error):result))
         .catch(error => (typeof callback === 'function') ? callback(error) : Promise.reject(error));
     };
 
@@ -494,4 +461,37 @@ export default (Model, bootOptions = {}) => {
       }
     });
   }
+	
+  let _modelNotifyAfterDelete = function (id, opt, result,callback) {
+      Model.findById(id, {deleted: true},  (err, deletedInstance)=> {
+          if (err) {
+              return callback(err);
+          }
+          
+          var context = {
+              Model: Model,
+              where: {[idName]: id},
+              instance: deletedInstance,
+              hookState: {},
+              options: opt,
+          };
+          
+          Model.notifyObserversOf('after delete', context,
+               (err, _ctx) => {
+                  if (err) return callback(err);
+                  
+                  var _result = _ctx.options.remoteCtx.result;
+                  if (_result != null && typeof(_result) == "object") {
+                      result = Object.assign(result, _result);
+                  }
+                  
+                  if (typeof callback === 'function') {
+                      return callback(null, result);
+                  }
+                  else {
+                      return result;
+                  }
+              });
+      });
+  };
 };

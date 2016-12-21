@@ -394,33 +394,8 @@ exports.default = function (Model) {
         }
 
         Model.updateAll((0, _defineProperty3.default)({}, idName, id), (0, _extends4.default)({}, scrubbed), newOpt).then(function (result) {
-          Model.findById(id, { deleted: true }, function (err, deletedInstance) {
-            if (err) {
-              return callback(err);
-            }
-
-            var context = {
-              Model: Model,
-              where: (0, _defineProperty3.default)({}, idName, id),
-              instance: deletedInstance,
-              hookState: {},
-              options: opt
-            };
-
-            Model.notifyObserversOf('after delete', context, function (err, _ctx) {
-              if (err) return callback(err);
-
-              var _result = _ctx.options.remoteCtx.result;
-              if (_result != null && (typeof _result === 'undefined' ? 'undefined' : (0, _typeof3.default)(_result)) == "object") {
-                result = (0, _extends4.default)(result, _result);
-              }
-
-              if (typeof callback === 'function') {
-                return callback(null, result);
-              } else {
-                return result;
-              }
-            });
+          return _modelNotifyAfterDelete(id, opt, result, function (err, result) {
+            return typeof callback === 'function' ? callback(error) : result;
           });
         }).catch(function (error) {
           return typeof callback === 'function' ? callback(error) : _promise2.default.reject(error);
@@ -431,10 +406,14 @@ exports.default = function (Model) {
       Model.deleteById = Model.destroyById;
 
       Model.prototype.destroy = function softDestroy(opt, cb) {
+        var _this = this;
+
         var callback = cb === undefined && typeof opt === 'function' ? opt : cb;
 
         return this.updateAttributes((0, _extends4.default)({}, scrubbed), { delete: true }).then(function (result) {
-          return typeof callback === 'function' ? callback(null, result) : result;
+          return _modelNotifyAfterDelete(_this.id, opt, result, function (err, result) {
+            return typeof callback === 'function' ? callback(error) : result;
+          });
         }).catch(function (error) {
           return typeof callback === 'function' ? callback(error) : _promise2.default.reject(error);
         });
@@ -569,6 +548,37 @@ exports.default = function (Model) {
       }
     });
   }
+
+  var _modelNotifyAfterDelete = function _modelNotifyAfterDelete(id, opt, result, callback) {
+    Model.findById(id, { deleted: true }, function (err, deletedInstance) {
+      if (err) {
+        return callback(err);
+      }
+
+      var context = {
+        Model: Model,
+        where: (0, _defineProperty3.default)({}, idName, id),
+        instance: deletedInstance,
+        hookState: {},
+        options: opt
+      };
+
+      Model.notifyObserversOf('after delete', context, function (err, _ctx) {
+        if (err) return callback(err);
+
+        var _result = _ctx.options.remoteCtx.result;
+        if (_result != null && (typeof _result === 'undefined' ? 'undefined' : (0, _typeof3.default)(_result)) == "object") {
+          result = (0, _extends4.default)(result, _result);
+        }
+
+        if (typeof callback === 'function') {
+          return callback(null, result);
+        } else {
+          return result;
+        }
+      });
+    });
+  };
 };
 
 module.exports = exports['default'];
