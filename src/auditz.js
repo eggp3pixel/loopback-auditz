@@ -340,7 +340,7 @@ export default (Model, bootOptions = {}) => {
       }
       
       Model.updateAll({ [idName]: id }, { ...scrubbed}, newOpt)
-	  .then(result=> _modelNotifyAfterDelete(id, opt, result,(err,result)=>(typeof callback === 'function') ? callback(error):result))
+	  .then(result=> _modelNotifyAfterDelete(id, opt, result,(err,result)=>(typeof callback === 'function') ? callback(err):result))
       .catch(error => (typeof callback === 'function') ? callback(error) : Promise.reject(error));
     };
 
@@ -351,7 +351,7 @@ export default (Model, bootOptions = {}) => {
       const callback = (cb === undefined && typeof opt === 'function') ? opt : cb;
 
       return this.updateAttributes({ ...scrubbed }, {delete: true})
-        .then(result => _modelNotifyAfterDelete(this.id, opt, {instance:result},(err,result)=>(typeof callback === 'function') ? callback(error):result))
+        .then(result => _modelNotifyAfterDelete(this.id, opt, {instance:result},(err,result)=>(typeof callback === 'function') ? callback(err):result))
         .catch(error => (typeof callback === 'function') ? callback(error) : Promise.reject(error));
     };
 

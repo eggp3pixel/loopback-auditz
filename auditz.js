@@ -395,7 +395,7 @@ exports.default = function (Model) {
 
         Model.updateAll((0, _defineProperty3.default)({}, idName, id), (0, _extends4.default)({}, scrubbed), newOpt).then(function (result) {
           return _modelNotifyAfterDelete(id, opt, result, function (err, result) {
-            return typeof callback === 'function' ? callback(error) : result;
+            return typeof callback === 'function' ? callback(err) : result;
           });
         }).catch(function (error) {
           return typeof callback === 'function' ? callback(error) : _promise2.default.reject(error);
