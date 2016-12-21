@@ -39,7 +39,7 @@
   "license": "ISC",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jouke/loopback-auditz.git"
+    "url": "git+https://github.com/eggp3pixel/loopback-auditz"
   },
   "babel": {
     "presets": [
