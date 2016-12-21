@@ -351,7 +351,7 @@ export default (Model, bootOptions = {}) => {
       const callback = (cb === undefined && typeof opt === 'function') ? opt : cb;
 
       return this.updateAttributes({ ...scrubbed }, {delete: true})
-        .then(result => _modelNotifyAfterDelete(this.id, opt, result,(err,result)=>(typeof callback === 'function') ? callback(error):result))
+        .then(result => _modelNotifyAfterDelete(this.id, opt, {instance:result},(err,result)=>(typeof callback === 'function') ? callback(error):result))
         .catch(error => (typeof callback === 'function') ? callback(error) : Promise.reject(error));
     };
 
@@ -480,7 +480,7 @@ export default (Model, bootOptions = {}) => {
                (err, _ctx) => {
                   if (err) return callback(err);
                   
-                  var _result = _ctx.options.remoteCtx.result;
+                  var _result = _ctx.options.result;
                   if (_result != null && typeof(_result) == "object") {
                       result = Object.assign(result, _result);
                   }

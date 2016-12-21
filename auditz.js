@@ -411,7 +411,7 @@ exports.default = function (Model) {
         var callback = cb === undefined && typeof opt === 'function' ? opt : cb;
 
         return this.updateAttributes((0, _extends4.default)({}, scrubbed), { delete: true }).then(function (result) {
-          return _modelNotifyAfterDelete(_this.id, opt, result, function (err, result) {
+          return _modelNotifyAfterDelete(_this.id, opt, { instance: result }, function (err, result) {
             return typeof callback === 'function' ? callback(error) : result;
           });
         }).catch(function (error) {
@@ -566,7 +566,7 @@ exports.default = function (Model) {
       Model.notifyObserversOf('after delete', context, function (err, _ctx) {
         if (err) return callback(err);
 
-        var _result = _ctx.options.remoteCtx.result;
+        var _result = _ctx.options.result;
         if (_result != null && (typeof _result === 'undefined' ? 'undefined' : (0, _typeof3.default)(_result)) == "object") {
           result = (0, _extends4.default)(result, _result);
         }
