@@ -354,8 +354,14 @@ export default (Model, bootOptions = {}) => {
 			};
 	
 			Model.notifyObserversOf('after delete', context,
-				function(err, ctx) {
+				function(err, _ctx) {
 					if (err) return callback(err);
+					
+					var _result =  ctx.options.remoteCtx.result;
+					if(_result != null && typeof(_result) == "object")
+                    {
+                      result = Object.assign(result,_result);
+                    }
 					
 					if(typeof callback === 'function')
 					{
