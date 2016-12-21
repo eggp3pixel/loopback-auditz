@@ -396,7 +396,7 @@ exports.default = function (Model) {
         return Model.updateAll((0, _defineProperty3.default)({}, idName, id), (0, _extends4.default)({}, scrubbed), newOpt)
         //.then(result => (typeof callback === 'function') ? callback(null, result) : result)
         .then(function (result) {
-          Model.findById((0, _defineProperty3.default)({}, idName, id), { deleted: true }, function (err, deletedInstance) {
+          Model.findById(id, { deleted: true }, function (err, deletedInstance) {
             if (err) {
               return callback(err);
             }
