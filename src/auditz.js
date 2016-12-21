@@ -403,8 +403,10 @@ export default (Model, bootOptions = {}) => {
     };
 
     const _find = Model.find;
-    Model.find = function findDeleted(query = {}, ...rest) {
-      if (!query.deleted) {
+    Model.find = function findDeleted(query = {},filter = {}, ...rest) {
+		var deleted = query.deleted !== undefined?query.deleted: filter.deleted !== undefined ?filter.deleted:undefined;
+      
+      if (!deleted) {
         if (!query.where || Object.keys(query.where).length === 0) {
           query.where = queryNonDeleted;
         } else {
