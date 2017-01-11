@@ -111,28 +111,28 @@ exports.default = function (Model) {
 
   if (options.updatedAt !== false) {
     if (typeof properties[options.updatedAt] === 'undefined') {
-      Model.defineProperty(options.updatedAt, { type: Date, required: options.required, default: null });
+      Model.defineProperty(options.updatedAt, { type: Date, required: options.required });
     }
   }
 
   if (options.createdBy !== false) {
     if (typeof properties[options.createdBy] === 'undefined') {
-      Model.defineProperty(options.createdBy, { type: Number, required: false, default: null });
+      Model.defineProperty(options.createdBy, { type: Number, required: false });
     }
   }
 
   if (options.updatedBy !== false) {
     if (typeof properties[options.updatedBy] === 'undefined') {
-      Model.defineProperty(options.updatedBy, { type: Number, required: false, default: null });
+      Model.defineProperty(options.updatedBy, { type: Number, required: false });
     }
   }
 
   if (options.softDelete) {
     if (typeof properties[options.deletedAt] === 'undefined') {
-      Model.defineProperty(options.deletedAt, { type: Date, required: false, default: null });
+      Model.defineProperty(options.deletedAt, { type: Date, required: false });
     }
     if (typeof properties[options.deletedBy] === 'undefined') {
-      Model.defineProperty(options.deletedBy, { type: Number, required: false, default: null });
+      Model.defineProperty(options.deletedBy, { type: Number, required: false });
     }
   }
 
