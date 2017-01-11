@@ -359,9 +359,17 @@ exports.default = function (Model) {
       if (ctx.instance) {
         ctx.instance[keyAt] = new Date();
         ctx.instance[keyBy] = currentUser;
+        if (options.softDelete && !softDelete) {
+          ctx.instance[options.deletedAt] = null;
+          ctx.instance[options.deletedBy] = null;
+        }
       } else {
         ctx.data[keyAt] = new Date();
         ctx.data[keyBy] = currentUser;
+        if (options.softDelete && !softDelete) {
+          ctx.data[options.deletedAt] = null;
+          ctx.data[options.deletedBy] = null;
+        }
       }
       return next();
     });
