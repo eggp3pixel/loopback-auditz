@@ -377,7 +377,7 @@ exports.default = function (Model) {
 
   if (options.softDelete) {
     (function () {
-      Model.destroyAll = function softDestroyAll(where, cb) {
+      Model.destroyAll = function softDestroyAll(where, opt, cb) {
         var query = where || {};
         var callback = cb;
         if (typeof where === 'function') {

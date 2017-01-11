@@ -327,7 +327,7 @@ export default (Model, bootOptions = {}) => {
   });
 
   if (options.softDelete) {
-    Model.destroyAll = function softDestroyAll(where, cb) {
+    Model.destroyAll = function softDestroyAll(where,opt, cb) {
       let query = where || {};
       let callback = cb;
       if (typeof where === 'function') {
