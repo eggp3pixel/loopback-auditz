@@ -389,13 +389,16 @@ export default (Model, bootOptions = {}) => {
       var filter = typeof(rest[0]) == "object"?rest[0]:{};
 	  var deleted = query.deleted !== undefined?query.deleted: filter.deleted !== undefined ?filter.deleted:undefined;
       
-      if (!deleted) {
-        if (!query.where || Object.keys(query.where).length === 0) {
-          query.where = queryNonDeleted;
-        } else {
-          query.where = { and: [ query.where, queryNonDeleted ] };
-        }
-      }
+	  if(options.softDelete) {
+		  if (!deleted) {
+			  if (!query.where || Object.keys(query.where).length === 0) {
+				  query.where = queryNonDeleted;
+			  }
+			  else {
+				  query.where = {and: [query.where, queryNonDeleted]};
+			  }
+		  }
+	  }
 
       return _find.call(Model, query, ...rest);
     };

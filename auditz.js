@@ -463,11 +463,13 @@ exports.default = function (Model) {
         var filter = (0, _typeof3.default)(rest[0]) == "object" ? rest[0] : {};
         var deleted = query.deleted !== undefined ? query.deleted : filter.deleted !== undefined ? filter.deleted : undefined;
 
-        if (!deleted) {
-          if (!query.where || (0, _keys2.default)(query.where).length === 0) {
-            query.where = queryNonDeleted;
-          } else {
-            query.where = { and: [query.where, queryNonDeleted] };
+        if (options.softDelete) {
+          if (!deleted) {
+            if (!query.where || (0, _keys2.default)(query.where).length === 0) {
+              query.where = queryNonDeleted;
+            } else {
+              query.where = { and: [query.where, queryNonDeleted] };
+            }
           }
         }
 
