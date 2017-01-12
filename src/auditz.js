@@ -19,7 +19,7 @@ export default (Model, bootOptions = {}) => {
     createdBy: 'createdBy',
     updatedBy: 'updatedBy',
     deletedBy: 'deletedBy',
-    softDelete: true,
+    softDelete: false,
     unknownUser: 0,
     remoteCtx: 'remoteCtx',
     scrub: false,
