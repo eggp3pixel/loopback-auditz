@@ -418,7 +418,7 @@ exports.default = function (Model) {
 
         var callback = cb === undefined && typeof opt === 'function' ? opt : cb;
 
-        return this.updateAttributes((0, _extends4.default)({}, scrubbed), { delete: true }).then(function (result) {
+        return this.updateAttributes((0, _extends4.default)({}, scrubbed), (0, _extends4.default)({}, { delete: true }, opt)).then(function (result) {
           return _modelNotifyAfterDelete(_this.id, opt, { instance: result }, function (err, result) {
             return typeof callback === 'function' ? callback(err) : result;
           });

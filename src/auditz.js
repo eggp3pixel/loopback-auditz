@@ -360,7 +360,7 @@ export default (Model, bootOptions = {}) => {
     Model.prototype.destroy = function softDestroy(opt, cb) {
       const callback = (cb === undefined && typeof opt === 'function') ? opt : cb;
 
-      return this.updateAttributes({ ...scrubbed }, {delete: true})
+      return this.updateAttributes({ ...scrubbed }, Object.assign({},{delete: true},opt))
         .then(result => _modelNotifyAfterDelete(this.id, opt, {instance:result},(err,result)=>(typeof callback === 'function') ? callback(err):result))
         .catch(error => (typeof callback === 'function') ? callback(error) : Promise.reject(error));
     };
